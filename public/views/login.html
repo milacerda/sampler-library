@@ -1,0 +1,21 @@
+<div class="container h-100 d-flex justify-content-center align-items-center flex-wrap auth">
+    <div class="box-login">
+        <h1>Login</h1>
+        <form name="loginForm" ng-submit="login()">
+            <div class="form-group mb-3">
+                <label>E-mail</label>
+                <input type="email" name="email" class="form-control" ng-model="user.email" required>
+            </div>
+            <div class="form-group mb-3">
+                <label>Password</label>
+                <input type="password" name="password" class="form-control" ng-model="user.password" required>
+            </div>
+
+            <span class="text-danger">{{error}}</span>
+            <button class="btn btn-primary btn-block btn-lg mb-3" ng-disabled="loginForm.$invalid">Login</button>
+            <p>You don't have an account?<br />
+                <a class="normal-link" href="/register">Sign up here!</a>
+            </p>
+        </form>
+    </div>
+</div>

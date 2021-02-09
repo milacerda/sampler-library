@@ -1,0 +1,49 @@
+.box-login, .box-register {
+    position: relative;
+    width: 100%;
+    height: auto;
+    padding: 30px 30px 60px;
+    background: $off-white;
+
+    h1 {
+        font-weight: $font-bold;
+        color: $dark-gray;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+}
+
+.box-login {
+    max-width: 400px;
+}
+
+.box-register {
+    max-width: 80%;
+    margin-top: 60px;
+    margin-bottom: 60px;
+}
+
+
+@media screen and (min-width: 768px) {
+    .container.auth {
+        max-height: calc(100vh - 100px);
+    }
+}
+@media screen and (max-width: 520px) {
+    .container.auth {
+        max-height: calc(100vh - 90px);
+    }
+    .box-register {
+        max-width: 100%;
+        margin: 20px 0;
+    }
+}
+@media screen and (max-width: 375px) {
+    .container.auth {
+        max-height: unset;
+    }
+    .box-login {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+}

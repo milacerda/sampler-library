@@ -1,0 +1,44 @@
+.table {
+	font-family: $heading-font;
+	font-size: .9em;
+	&.table-dark {
+		background-color: transparent;
+		thead {
+			tr {
+				background-color: transparent;
+				th {
+					border: none;
+					padding: 10px 20px;
+				}
+			}
+		}
+		tbody {
+			tr {
+				&:nth-of-type(odd) {
+					background-color: darken($light-gray, 5%);
+				}
+				&:nth-of-type(even) {
+					background-color: darken($light-gray, 8%);
+				}
+				th,
+				td {
+					border: none;
+					padding: 20px;
+					&.status {
+						font-weight: $font-semi-bold;
+					}
+				}
+			}
+		}
+		.btn-link {
+			border: none;
+			color: $gray;
+			margin-right: 10px;
+			font-weight: $font-semi-bold;
+			&:hover,
+			&:focus {
+				color: $red;
+			}
+		}
+	}
+}

@@ -1,0 +1,77 @@
+// filled buttons
+@mixin btn-theme($btn-color) {
+    background-color: $btn-color;
+    border-color: $btn-color;
+
+    &:hover,
+    &:focus,
+    &:not(:disabled):not(.disabled):active:not(.btn-dark) {
+        background-color: darken($btn-color, 10%);
+        border-color: darken($btn-color, 10%);
+    }
+
+    &:disabled,
+    &.disabled {
+        background-color: $btn-color;
+        border-color: $btn-color;
+        opacity: .5;
+    }
+}
+
+// bordered buttons
+@mixin btn-outline-theme($btn-color) {
+    border-color: $btn-color;
+    color: $btn-color;
+
+    &:hover,
+    &:focus,
+    &:not(:disabled):not(.disabled):active {
+        border-color: $btn-color;
+        background-color: $btn-color;
+        color: $white;
+    }
+
+    &:disabled,
+    &.disabled {
+        border-color: $btn-color;
+        color: $btn-color;
+        opacity: .5;
+    }
+}
+
+// alerts
+@mixin alert-theme($alert-color) {
+    background-color: lighten($alert-color, 25%);
+    color: darken($alert-color, 25%);
+}
+
+// transitions
+@mixin transition($transition) {
+    -webkit-transition: $transition;
+    -moz-transition: $transition;
+    -o-transition: $transition;
+    transition: $transition;
+}
+
+// transform
+@mixin transform($transform) {
+    -webkit-transform: $transform;
+    -moz-transform: $transform;
+    -o-transform: $transform;
+    transform: $transform;
+}
+
+@mixin transform-origin($transform-origin) {
+    -webkit-transform-origin: $transform-origin;
+    -moz-transform-origin: $transform-origin;
+    -o-transform-origin: $transform-origin;
+    transform-origin: $transform-origin;
+}
+
+// inverse color
+@mixin grayscale($grayscale) {
+    -webkit-filter: #{"grayscale(#{$grayscale})"};
+    -moz-filter: #{"grayscale(#{$grayscale})"};
+    -o-filter: #{"grayscale(#{$grayscale})"};
+    filter: #{"grayscale(#{$grayscale})"};
+}

@@ -1,0 +1,120 @@
+<main class="with-header">
+
+    <div class="container" ng-init="list()">
+        <div class="row mb-5">
+            <div class="col-md-8">
+                <h1>Books</h1>
+            </div>
+            <div class="col-md-4">
+                <input class="form-control" ng-model="search" placeholder="Search...">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>ISBN</th>
+                            <th>Publication date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="book in books | filter:search">
+                            <td>{{book.id}}</td>
+                            <td>{{book.title}}</td>
+                            <td>{{book.isbn}}</td>
+                            <td>{{book.publication_date | amDateFormat:'MM/DD/YYYY'}}</td>
+                            <td>{{book.status === 'AVAILABLE' ? 'Available' : 'Checked out'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <nav>
+                    <ul class="pagination">
+                        <li class="page-item" ng-class="{'disabled': current_page == 1}">
+                            <button class="page-link" aria-label="Previous" ng-click="list(1)">
+                                <span aria-hidden="true">&laquo;</span>
+                            </button>
+                        </li>
+                        <li class="page-item" ng-repeat="i in pages track by $index"
+                            ng-class="{'active': current_page == $index + 1}">
+                            <button class="page-link" ng-click="list($index + 1)">{{$index + 1}}</button>
+                        </li>
+
+                        <li class="page-item" ng-class="{'disabled': current_page == last_page}">
+                            <button class="page-link" aria-label="Next" ng-click="list(last)">
+                                <span aria-hidden="true">&raquo;</span>
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <form name="form" ng-submit="sendAction()">
+                <h2 class="mb-3">Check in or out books</h2>
+                <div class="form-group">
+                    <label>ISBN</label>
+                    <input type="text" name="isbn" id="isbn" ng-model="bookAction.isbn" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Action</label>
+                    <select name="action" id="action" ng-model="bookAction.action" class="form-control">
+                        <option>CHECKIN</option>
+                        <option>CHECKOUT</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Success -->
+    <div class="modal fade" id="modalSuccess" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">{{ bookAction.action | camelCase}} Book</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <p>Book with ISBN <strong>{{ bookAction.isbn }}</strong> {{ bookAction.action | action}} with
+                        success!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Error -->
+    <div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Error</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <p>{{error}}</p>
+                    <ul class="text-danger">
+                        <ng-container ng-repeat="(key, value) in errors">
+                            <li ng-repeat="e in value">{{e}}</li>
+                        </ng-container>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>

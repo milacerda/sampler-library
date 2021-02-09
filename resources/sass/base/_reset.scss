@@ -1,0 +1,40 @@
+::-moz-selection {
+  color: $white;
+  background: $secondary-color;
+}
+
+::selection {
+  color: $white;
+  background: $secondary-color;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: $primary-font;
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+main {
+  @media only screen and (min-width: 992px) {
+    padding-bottom: 0;
+  }
+  &.with-header {
+    padding: 50px 20px 150px 20px;
+    @media only screen and (min-width: 992px) {
+      padding-top: 60px;
+    }
+  }
+}
+
+
+.container-fluid {
+  @media only screen and (min-width: 1200px) {
+    max-width: 1140px;
+  }
+}

@@ -1,0 +1,66 @@
+.btn {
+    outline: none;
+    border: solid 1px transparent;
+    font-size: 1em;
+    padding: .6em 1.2em;
+    font-weight: $font-black;
+    text-transform: uppercase;
+    @include asterisk(box-shadow, 3px 3px 12px rgba($black, .1) !important, true);
+    color: $white;
+
+    &.btn-lg {
+        padding: 1.5em 2em;
+        border-radius: 12px;
+    }
+
+    &.btn-sm {
+        font-size: .9em;
+        padding: .5em 1em;
+    }
+
+    &.btn-link {
+        @include asterisk(box-shadow, none !important, true);
+        color: $primary-color;
+        padding: 0;
+    }
+
+    &.btn-block {
+        padding-right: 0;
+        padding-left: 0;
+        @media only screen and (min-width: 1199px) {
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+
+    &.btn-icon svg {
+        font-size: 1.2em;
+    }
+
+    &.btn-primary {
+        @include btn-theme($primary-color);
+    }
+
+    &.btn-outline-primary {
+        @include btn-outline-theme($primary-color);
+    }
+
+    &.btn-light {
+        @include btn-theme($white);
+        color: $primary-color;
+    }
+
+    &.btn-outline-light {
+        @include btn-outline-theme($white);
+        color: $primary-color;
+    }
+
+    &.btn-secondary {
+        @include btn-theme($secondary-color);
+    }
+
+    &.btn-success {
+        @include btn-theme($green);
+    }
+}

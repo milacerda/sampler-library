@@ -1,0 +1,26 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,600,700,800,900|Roboto:300,300i,400,400i,500,500i,700,700i');
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+@import "node_modules/font-awesome/scss/font-awesome.scss";
+
+//abstracts
+@import 'abstracts/variables',
+'abstracts/functions',
+'abstracts/mixins',
+'abstracts/helpers';
+
+//base
+@import 'base/reset',
+'base/typography';
+
+//components
+@import
+'components/header',
+'components/buttons',
+'components/form',
+'components/auth',
+'components/table',
+'components/links';

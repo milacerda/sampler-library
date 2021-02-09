@@ -1,0 +1,8 @@
+a {
+	text-decoration: none !important;
+	cursor: pointer !important;
+	&.normal-link {
+		color: $primary-color;
+		border-bottom: solid 1px $primary-color;
+	}
+}

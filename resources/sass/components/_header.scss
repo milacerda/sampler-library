@@ -1,0 +1,9 @@
+.navbar .h3 {
+    width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+    .navbar .h3 {
+        width: auto !important;
+    }
+}

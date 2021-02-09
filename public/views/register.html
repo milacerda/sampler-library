@@ -1,0 +1,63 @@
+<div class="container h-100 d-flex flex-row justify-content-center align-items-center flex-wrap auth">
+    <div class="box-register">
+        <h1>Register</h1>
+        <form name="registerForm" ng-submit="register()">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input id="name" type="text" class="form-control" name="name" ng-model="user.name" required
+                    autocomplete="name" autofocus ng-class="{'is-invalid': errorFields.includes('name')}">
+                <span ng-if="registerForm.name.$error.required" class="invalid-feedback" role="alert">
+                    <strong>Name is required</strong>
+                </span>
+            </div>
+
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input id="email" validate-email type="email" class="form-control" name="email" ng-model="user.email"
+                    required autocomplete="email" ng-class="{'is-invalid': registerForm.email.$error.email}">
+                <span ng-if="registerForm.email.$error.email" class="invalid-feedback" role="alert">
+                    <strong>E-mail is invalid</strong>
+                </span>
+            </div>
+
+            <div class="form-group">
+                <label for="date_of_birth">Date of birth</label>
+                <input id="date_of_birth" validate-dob type="date" class="form-control" name="date_of_birth"
+                    ng-model="user.date_of_birth" required
+                    ng-class="{'is-invalid': registerForm.date_of_birth.$error.dob}">
+                <span ng-if="registerForm.date_of_birth.$error.dob" class="invalid-feedback" role="alert">
+                    <strong>Date of birth can't be in the future</strong>
+                </span>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" type="password" class="form-control" name="password" required
+                    autocomplete="new-password" ng-model="user.password"
+                    ng-class="{'is-invalid': errorFields.includes('password')}">
+                <span ng-if="registerForm.password.$error.required" class="invalid-feedback" role="alert"
+                    ng-minlength="6">
+                    <strong>Password is required</strong>
+                </span>
+            </div>
+
+            <div class="form-group">
+                <label for="password-confirm">Confirm Password</label>
+                <input id="password-confirm" type="password" class="form-control" name="confirmPassword" required
+                    autocomplete="new-password" ng-model="user.confirmPassword"
+                    ng-class="{'is-invalid': registerForm.confirmPassword.$dirty && (registerForm.password.$modelValue != registerForm.confirmPassword.$modelValue)}"
+                    ng-minlength="6">
+                <span
+                    ng-if="registerForm.confirmPassword.$dirty && (registerForm.password.$modelValue != registerForm.confirmPassword.$modelValue)"
+                    class="invalid-feedback" role="alert">
+                    <strong>The passwords are different</strong>
+                </span>
+            </div>
+            <span class="text-danger">
+                {{ error }}
+            </span>
+            <button type="submit" class="btn btn-primary btn-block btn-lg mb-3"
+                ng-disabled="registerForm.$invalid">Register</button>
+        </form>
+    </div>
+</div>
