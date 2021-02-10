@@ -47,7 +47,7 @@ class Authenticate extends Middleware
         }
     }
 
-    private function authenticate(Request $request)
+    protected function authenticate(Request $request)
     {
         try {
             $this->checkToken($request);
