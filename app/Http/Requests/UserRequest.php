@@ -42,4 +42,17 @@ class UserRequest extends FormRequest
             'date_of_birth' => ['required','date','before:today'],
         ];
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'email.unique' => 'This e-mail is already registered',
+            'date_of_birth.before' => "Date of birth can't be in the future",
+        ];
+    }
 }

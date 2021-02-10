@@ -14566,6 +14566,21 @@ p {
   color: #e3342f;
 }
 
+.page-item.active .page-link {
+  z-index: 3;
+  color: #fff;
+  background-color: #4dc0b9;
+  border-color: #4dc0b9;
+}
+
+.page-item .page-link {
+  color: #4dc0b9;
+}
+
+.page-item .page-link:focus {
+  box-shadow: none;
+}
+
 a {
   text-decoration: none !important;
   cursor: pointer !important;

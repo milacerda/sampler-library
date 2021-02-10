@@ -44717,54 +44717,57 @@ app.config(function($routeProvider, $locationProvider) {
         });
 });
 
-var app = angular.module("sampler", ["sampler-routes", "angularMoment", "angular-jwt"],
-    [
-        "$httpProvider",
-        function($httpProvider) {
-            $httpProvider.interceptors.push("authInterceptor");
-        }
-    ]
-)
-.run(function($rootScope, $location, $route, authService) {
-    $rootScope.$on("$locationChangeStart", function() {
-        var nextRoute = $route.routes[$location.path()];
-        $rootScope.currentPath = $location.path();
-        if (nextRoute.restricted) {
-            if(!authService.isLoggedIn()) {
-                $rootScope.currentPath = '/login';
-                $location.path("/login");
+var app = angular
+    .module(
+        "sampler",
+        ["sampler-routes", "angularMoment", "angular-jwt"],
+        [
+            "$httpProvider",
+            function($httpProvider) {
+                $httpProvider.interceptors.push("authInterceptor");
             }
-        }
+        ]
+    )
+    .run(function($rootScope, $location, $route, authService) {
+        $rootScope.$on("$locationChangeStart", function() {
+            var nextRoute = $route.routes[$location.path()];
+            $rootScope.currentPath = $location.path();
+            if (nextRoute.restricted) {
+                if (!authService.isLoggedIn()) {
+                    $rootScope.currentPath = "/login";
+                    $location.path("/login");
+                }
+            }
+        });
+        $rootScope.$on("unauthorized", () => {
+            authService.removeToken();
+            $location.path("/login");
+        });
+    })
+    .constant("moment", moment)
+    .filter("camelCase", function() {
+        var camelCaseFilter = function(input) {
+            var string = "";
+            if (input) {
+                input.toLowerCase();
+                string = input.slice(0, 1).toUpperCase() + input.slice(1);
+            }
+            return string;
+        };
+        return camelCaseFilter;
+    })
+    .filter("action", function() {
+        var actionFilter = function(input) {
+            var string = "";
+            if (input === "CHECKIN") {
+                string = "checked in";
+            } else {
+                string = "checked out";
+            }
+            return string;
+        };
+        return actionFilter;
     });
-    $rootScope.$on('unauthorized', () => {
-        authService.removeToken();
-        $location.path("/login");
-    });
-})
-.constant("moment", moment)
-.filter('camelCase', function () {
-    var camelCaseFilter = function (input) {
-        var string = '';
-        if (input) {
-            input.toLowerCase();
-            string = input.slice(0,1).toUpperCase() + input.slice(1);
-        }
-        return string;
-    };
-    return camelCaseFilter;
-})
-.filter('action', function () {
-    var actionFilter = function (input) {
-        var string = '';
-        if (input === 'CHECKIN') {
-            string = 'checked in';
-        } else {
-            string = 'checked out';
-        }
-        return string;
-    };
-    return actionFilter;
-})
 
 app.directive("validateEmail", function() {
     var regex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
@@ -44787,7 +44790,7 @@ app.directive("validateDob", function() {
         link: function(scope, elm, attrs, ctrl) {
             ctrl.$validators.dob = function(modelValue) {
                 if (moment(modelValue).isAfter(moment())) {
-                    return false;  
+                    return false;
                 } else {
                     return true;
                 }
@@ -44796,10 +44799,28 @@ app.directive("validateDob", function() {
     };
 });
 
-app.factory('authInterceptor', function($injector) {
-      return {
+app.directive("validatePassword", function() {
+    return {
+        require: "ngModel",
+        scope: {
+            confirmPassword: "=validatePassword"
+        },
+        link: function(scope, elm, attrs, ctrl) {
+            ctrl.$validators.validatePassword = function(val) {
+                return val == scope.confirmPassword;
+            };
+
+            scope.$watch("confirmPassword", function() {
+                ctrl.$validate();
+            });
+        }
+    };
+});
+
+app.factory("authInterceptor", function($injector) {
+    return {
         request: function(config) {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem("token");
             config.headers = config.headers || {};
             if (token != null) {
                 config.headers.Authorization = `Bearer ${token}`;
@@ -44812,10 +44833,11 @@ app.factory('authInterceptor', function($injector) {
                 response.data.status === "Token is invalid" ||
                 response.data.status === "Authorization Token not found"
             ) {
-                var rScope = $injector.get('$rootScope');
+                var rScope = $injector.get("$rootScope");
                 rScope.$broadcast("unauthorized");
             }
-            return response;
+            var q = $injector.get("$q");
+            return response || q.when(response);
         },
         responseError: function(rejection) {
             if (
@@ -44823,21 +44845,21 @@ app.factory('authInterceptor', function($injector) {
                 rejection.data.status === "Token is invalid" ||
                 rejection.data.status === "Authorization Token not found"
             ) {
-                var rScope = $injector.get('$rootScope');
+                var rScope = $injector.get("$rootScope");
                 rScope.$broadcast("unauthorized");
             }
-            return rejection;
+
+            var q = $injector.get("$q");
+            return q.reject(rejection);
         }
-      };
-    }
-);
+    };
+});
 
-app.controller('mainController', function($scope, authService) {
-
-    $scope.init = function () {
+app.controller("mainController", function($scope, authService) {
+    $scope.init = function() {
         $scope.loggedIn = authService.isLoggedIn();
         $scope.route = window.location.pathname;
-    }
+    };
 
     $scope.logout = function() {
         authService.logout().then(() => {
@@ -44847,68 +44869,70 @@ app.controller('mainController', function($scope, authService) {
     };
 });
 
-app.controller('bookController', function($scope, $http, jwtHelper, authService) {
+app.controller("bookController", function($scope, $http, jwtHelper, authService) {
     $scope.errorFields = [];
 
-    $scope.list = function(page = 1){
-        $http.get(`/api/books?page=${page}`)
-        .then((response) => {
+    $scope.list = function(page = 1) {
+        $http.get(`/api/books?page=${page}`).then(response => {
+            console.log(response);
             if (response.data.data) {
-                var books = response.data.data.map((book) => {
-                    book.publication_date = moment(book.publication_date).toDate();
+                var books = response.data.data.map(book => {
+                    book.publication_date = moment(
+                        book.publication_date
+                    ).toDate();
                     return book;
-                })
+                });
                 $scope.books = books;
 
                 $scope.current_page = response.data.current_page;
                 $scope.total = response.data.total;
                 $scope.last_page = response.data.last_page;
-                $scope.pages = new Array(response.data.total / 5);
-
+                let size = Math.ceil($scope.total / 5);
+                $scope.pages = new Array(size);
             }
         },
-        (e) => {
+        e => {
             $scope.error = e.data.message;
-            $('#modalError').modal('show');
+            $("#modalError").modal("show");
         });
-    }
+    };
 
     $scope.sendAction = function() {
         var data = $scope.bookAction;
         var token = jwtHelper.decodeToken(authService.getToken());
         data.user_id = token.sub;
 
-        $http.post("/api/logs", data)
-        .then((response) => {
-
-            if (response.status !== 201) {
-                if (response.data.errors) {
-                    $scope.errors = response.data.errors;
-                    $('#modalError').modal('show');
-                } else if (response.data.message) {
-                    $scope.error = response.data.message;
-                    $('#modalError').modal('show');
+        $http.post("/api/logs", data).then(
+            response => {
+                if (response.status !== 201) {
+                    if (response.data.errors) {
+                        $scope.errors = response.data.errors;
+                        $("#modalError").modal("show");
+                    } else if (response.data.message) {
+                        $scope.error = response.data.message;
+                        $("#modalError").modal("show");
+                    }
+                    return;
                 }
-                return;
-            }
 
-            $scope.list();
-            $('#modalSuccess').modal('show');
-        },
-        (e) => {
-            if (e.data.errors) {
-                $scope.errors = e.data.errors;
+                $scope.list();
+                $("#modalSuccess").modal("show");
+            },
+            e => {
+                if (e.data.errors) {
+                    $scope.errors = e.data.errors;
+                }
+                if (e.data.message) {
+                    $scope.error = e.data.message;
+                }
+                $("#modalError").modal("show");
             }
-            if (e.data.message) {
-                $scope.error = e.data.message;
-            }
-            $('#modalError').modal('show');
-        });
-    }
+        );
+    };
 });
 
-app.factory('authService', function($http, $window) {
-	return {
+app.factory("authService", function($http, $window) {
+    return {
         login: function(data) {
             return $http.post("/api/auth/login", data);
         },
@@ -44937,7 +44961,8 @@ app.factory('authService', function($http, $window) {
         },
         setHeaders: function(token) {
             if (token) {
-                $http.defaults.headers.common["Authorization"] = 'Bearer ' + token;
+                $http.defaults.headers.common["Authorization"] =
+                    "Bearer " + token;
             } else {
                 delete $http.defaults.headers.common["Authorization"];
             }
@@ -44945,38 +44970,57 @@ app.factory('authService', function($http, $window) {
     };
 });
 
-app.controller('loginController', function($scope, authService) {
+app.controller("loginController", function($scope, authService) {
+    $scope.loading = false;
 
-    $scope.login = function(){
-        authService.login($scope.user)
-        .then((response) => {
-            if (response.data.access_token) {
-                authService.setToken(response.data.access_token);
-                authService.setHeaders(response.data.access_token);
-                window.location = '/';
+    $scope.login = function() {
+        $scope.loading = true;
+        authService.login($scope.user).then(
+            response => {
+                if (response.data.access_token) {
+                    authService.setToken(response.data.access_token);
+                    authService.setHeaders(response.data.access_token);
+                    window.location = "/";
+                }
+            },
+            e => {
+                $scope.loading = false;
+                console.log(e);
+                $scope.error = "E-mail or password invalid.";
             }
-        },
-        (e) => {
-            $scope.error = e.data.error;
-            console.log(e);
-        });
-    }
-
+        );
+    };
 });
 
-app.controller('registerController', function($scope, authService) {
-    $scope.register = function(){
-        authService.register($scope.user)
-        .then((response) => {
-            if(response.status === 201) {
-                window.location.href = '/login';
-            } else {
-                $scope.error = response.data.error;
+app.controller("registerController", function($scope, authService) {
+    $scope.user = {
+        name: "",
+        email: "",
+        date_of_birth: "",
+        password: "",
+        confirmPassword: "",
+    };
+
+    $scope.error = "";
+    $scope.errors = "";
+    $scope.loading = false;
+
+    $scope.register = function() {
+        $scope.loading = true;
+        authService.register($scope.user).then(
+            response => {
+                if (response.status === 201) {
+                    window.location.href = "/login";
+                }
+            },
+            e => {
+                $scope.loading = false;
+                if (e.data.errors) {
+                    $scope.errors = e.data.errors;
+                } else {
+                    $scope.error = e.data.error;
+                }
             }
-        },
-        (e) => {
-            console.log(e);
-            $scope.error = e.data.error;
-        });
-    }
+        );
+    };
 });

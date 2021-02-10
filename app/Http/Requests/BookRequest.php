@@ -31,4 +31,17 @@ class BookRequest extends FormRequest
             'status' => ['required','in:AVAILABLE,CHECKED_OUT']
         ];
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'publication_date.before' => "Publication date can't be in the future",
+            'status.in' => "Invalid status"
+        ];
+    }
 }

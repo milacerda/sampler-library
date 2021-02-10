@@ -56,7 +56,7 @@
 
         <div class="row mt-5">
             <form name="form" ng-submit="sendAction()">
-                <h2 class="mb-3">Check in or out books</h2>
+                <h2 class="mb-3">Check in/out books</h2>
                 <div class="form-group">
                     <label>ISBN</label>
                     <input type="text" name="isbn" id="isbn" ng-model="bookAction.isbn" class="form-control">
@@ -64,8 +64,8 @@
                 <div class="form-group">
                     <label>Action</label>
                     <select name="action" id="action" ng-model="bookAction.action" class="form-control">
-                        <option>CHECKIN</option>
-                        <option>CHECKOUT</option>
+                        <option value="CHECKIN">Check In</option>
+                        <option value="CHECKOUT">Check Out</option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Send</button>

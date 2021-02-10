@@ -11,8 +11,11 @@
                 <input type="password" name="password" class="form-control" ng-model="user.password" required>
             </div>
 
-            <span class="text-danger">{{error}}</span>
-            <button class="btn btn-primary btn-block btn-lg mb-3" ng-disabled="loginForm.$invalid">Login</button>
+            <p class="text-danger text-center">{{error}}</p>
+
+            <button class="btn btn-primary btn-block btn-lg mb-3" ng-disabled="loginForm.$invalid || loading">
+                Login <i class="fa fa-spinner" spin="true" ng-if="loading"></i>
+            </button>
             <p>You don't have an account?<br />
                 <a class="normal-link" href="/register">Sign up here!</a>
             </p>
