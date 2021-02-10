@@ -31,7 +31,13 @@ class ValidIsbn implements Rule
     
         $total = 0;
         for($i = 0; $i < 10; $i++) {
-            $total += $value[$i] * (10 - $i);
+            if ($value[$i] == "X") {
+                $val = 10;
+            } else {
+                $val = $value[$i];
+            }
+
+            $total += $val * (10 - $i);
         }
     
         if ($total % 11 !== 0) {

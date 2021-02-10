@@ -44749,7 +44749,7 @@ var app = angular
         var camelCaseFilter = function(input) {
             var string = "";
             if (input) {
-                input.toLowerCase();
+                input = input.toLowerCase();
                 string = input.slice(0, 1).toUpperCase() + input.slice(1);
             }
             return string;
@@ -44921,9 +44921,11 @@ app.controller("bookController", function($scope, $http, jwtHelper, authService)
             e => {
                 if (e.data.errors) {
                     $scope.errors = e.data.errors;
+                    $scope.error = "";
                 }
                 if (e.data.message) {
                     $scope.error = e.data.message;
+                    $scope.errors = "";
                 }
                 $("#modalError").modal("show");
             }

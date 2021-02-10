@@ -41,7 +41,9 @@
                         </li>
                         <li class="page-item" ng-repeat="i in pages track by $index"
                             ng-class="{'active': current_page == $index + 1}">
-                            <button class="page-link" ng-click="list($index + 1)">{{$index + 1}}</button>
+                            <button class="page-link" ng-click="list($index + 1)" ng-disabled="current_page == $index + 1">
+                                {{$index + 1}}
+                            </button>
                         </li>
 
                         <li class="page-item" ng-class="{'disabled': current_page == last_page}">
