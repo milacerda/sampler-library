@@ -14040,7 +14040,7 @@ body {
 }
 
 main.with-header {
-  padding: 50px 20px 150px 20px;
+  padding-top: 50px;
 }
 
 @media only screen and (min-width: 992px) {
@@ -14115,6 +14115,10 @@ p {
 @media screen and (max-width: 768px) {
   .navbar .h3 {
     width: auto !important;
+  }
+
+  header .btn-primary {
+    margin: 0 !important;
   }
 }
 
@@ -14522,50 +14526,6 @@ p {
   font-size: 0.9em;
 }
 
-.table.table-dark {
-  background-color: transparent;
-}
-
-.table.table-dark thead tr {
-  background-color: transparent;
-}
-
-.table.table-dark thead tr th {
-  border: none;
-  padding: 10px 20px;
-}
-
-.table.table-dark tbody tr:nth-of-type(odd) {
-  background-color: #e1e1e1;
-}
-
-.table.table-dark tbody tr:nth-of-type(even) {
-  background-color: #dadada;
-}
-
-.table.table-dark tbody tr th,
-.table.table-dark tbody tr td {
-  border: none;
-  padding: 20px;
-}
-
-.table.table-dark tbody tr th.status,
-.table.table-dark tbody tr td.status {
-  font-weight: 600;
-}
-
-.table.table-dark .btn-link {
-  border: none;
-  color: #a3a3a3;
-  margin-right: 10px;
-  font-weight: 600;
-}
-
-.table.table-dark .btn-link:hover,
-.table.table-dark .btn-link:focus {
-  color: #e3342f;
-}
-
 .page-item.active .page-link {
   z-index: 3;
   color: #fff;
@@ -14579,6 +14539,50 @@ p {
 
 .page-item .page-link:focus {
   box-shadow: none;
+}
+
+@media only screen and (max-width: 959px) {
+  thead {
+    display: none;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #ddd;
+    display: block;
+  }
+
+  tbody tr:not(:first-of-type) {
+    margin-top: 30px;
+  }
+
+  tbody tr td {
+    border-bottom: solid 1px rgba(12, 12, 12, 0.1);
+    display: flex;
+    width: 100%;
+    align-items: center;
+    font-size: 0.8rem;
+    text-align: right;
+    font-weight: 500;
+    height: auto;
+    padding: 10px 0;
+    text-align: left;
+    box-sizing: border-box;
+  }
+
+  tbody tr td:before {
+    width: 40%;
+    content: attr(data-label);
+    font-weight: 800;
+    font-size: 0.8rem;
+    color: #234846;
+    text-transform: capitalize;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #search {
+    margin-top: 20px;
+  }
 }
 
 a {

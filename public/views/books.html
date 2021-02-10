@@ -6,16 +6,16 @@
                 <h1>Books</h1>
             </div>
             <div class="col-md-4">
-                <input class="form-control" ng-model="search" placeholder="Search...">
+                <input class="form-control" ng-model="search" id="search" placeholder="Search...">
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-12">
-                <table class="table table-striped">
-                    <thead>
+                <table class="table table-hover">
+                    <thead class="thead-dark">
                         <tr>
-                            <th>#</th>
+                            <th class="d-none d-lg-table-cell">#</th>
                             <th>Title</th>
                             <th>ISBN</th>
                             <th>Publication date</th>
@@ -24,11 +24,11 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="book in books | filter:search">
-                            <td>{{book.id}}</td>
-                            <td>{{book.title}}</td>
-                            <td>{{book.isbn}}</td>
-                            <td>{{book.publication_date | amDateFormat:'MM/DD/YYYY'}}</td>
-                            <td>{{book.status === 'AVAILABLE' ? 'Available' : 'Checked out'}}</td>
+                            <td data-label="#">{{book.id}}</td>
+                            <td data-label="Title">{{book.title}}</td>
+                            <td data-label="ISBN">{{book.isbn}}</td>
+                            <td data-label="Publication date">{{book.publication_date | amDateFormat:'MM/DD/YYYY'}}</td>
+                            <td data-label="Status">{{book.status === 'AVAILABLE' ? 'Available' : 'Checked out'}}</td>
                         </tr>
                     </tbody>
                 </table>
