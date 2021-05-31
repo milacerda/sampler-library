@@ -29,7 +29,7 @@ class SeoMiddleware
             // switch (Route::getCurrentRoute()->getPath()) {
                 // case "tournaments/{tournament}/register":
                     // $tournament = Tournament::where('slug', $request->tournament)->first();
-                    return view('public/static');
+                    return view('static');
             // }
         }
         return $next($request);
