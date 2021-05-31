@@ -47,7 +47,7 @@
                         </li>
 
                         <li class="page-item" ng-class="{'disabled': current_page == last_page}">
-                            <button class="page-link" aria-label="Next" ng-click="list(last)">
+                            <button class="page-link" aria-label="Next" ng-click="list(last_page)">
                                 <span aria-hidden="true">&raquo;</span>
                             </button>
                         </li>
@@ -85,8 +85,7 @@
                             aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <p>Book with ISBN <strong>{{ bookAction.isbn }}</strong> {{ bookAction.action | action}} with
-                        success!</p>
+                    <p>Book with ISBN <strong>{{ bookAction.isbn }}</strong> {{ bookAction.action | action}} with success!</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>

@@ -2,17 +2,23 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Auth\Middleware\Authenticate as Middleware;
-
 use Closure;
-use Illuminate\Http\Request;
-use Illuminate\Validation\UnauthorizedException;
+
 use Throwable;
+use Illuminate\Http\Request;
+use Tymon\JWTAuth\JWT as JWT;
+use Illuminate\Validation\UnauthorizedException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
-use Tymon\JWTAuth\JWTAuth;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
 class Authenticate extends Middleware
 {
+    /**
+     * @var JWT
+     */
+    protected $auth;
+
     /**
      * Get the path the user should be redirected to when they are not authenticated.
      *
@@ -26,28 +32,28 @@ class Authenticate extends Middleware
         }
     }
 
-    public function __construct(JWTAuth $auth)
+    public function __construct(JWT $auth)
     {
         $this->auth = $auth;
     }
 
     public function handle($request, Closure $next)
     {
-        $token = $this->authenticate($request);
+        $token = $this->authenticate($request) || null;
 
         $response = $next($request);
 
         return $this->setAuthenticationHeader($response, $token);
     }
 
-    private function checkToken(Request $request)
+    public function checkToken(Request $request)
     {
-        if (!$this->auth->parser()->setRequest($request)->hasToken() || !$this->auth->parseToken()->authenticate()) {
+        if (!$this->auth->parser()->setRequest($request)->hasToken() || !$this->auth->parseToken()) {
             throw new UnauthorizedException;
         }
     }
 
-    protected function authenticate(Request $request)
+    public function authenticate(Request $request)
     {
         try {
             $this->checkToken($request);
@@ -63,12 +69,13 @@ class Authenticate extends Middleware
             } catch (Throwable $th) {
                 throw new UnauthorizedException;
             }
-        } catch (Throwable $th) {
+        } catch (TokenInvalidException $th) {
+            // echo $th->getMessage();
             throw new UnauthorizedException;
         }
     }
 
-    private function setAuthenticationHeader($object, string $token = null)
+    public function setAuthenticationHeader($object, string $token = null)
     {
         if ($token) {
             $object->headers->set('Authorization', "Bearer {$token}");

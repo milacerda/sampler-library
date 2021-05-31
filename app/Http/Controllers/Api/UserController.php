@@ -29,7 +29,7 @@ class UserController extends Controller
    */
   public function store(UserRequest $request)
   {
-    $data = $request->except('_token');
+    $data = $request->except(['_token', 'confirmPassword']);
     $data['password'] = Hash::make($data['password']);
     return response()->json(User::create($data), 201);
   }
